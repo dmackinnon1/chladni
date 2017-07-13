@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Chladni Figures</title>
+</head>
+<style>
+.buttonDiv {
+	display: inline-block;
+	padding: 2px;
+	border: 2px;
+}
+.centered {
+	text-align: center;
+}
+
+#canvas {
+	text-align: center;
+	border-style: solid;
+	border-width: 10px;
+	border-color: grey;
+}
+.boxed {
+	border-style: solid;
+	border-width: 2px;
+	border-color: grey;
+}
+.lrg-font {
+	font-size:1.5em;
+}
+
+</style> 
+</head>
+
+<script src="js/chladni.js"></script> 
+
+<script> 
+var size = 400;
+
+function addWaveButtonClicked() {
+		waveController.newWave();
+		refreshWaveHolder();
+};	
+
+function refreshWaveHolder() {
+	var waveHolder = document.getElementById("waveComponentHolder");	
+	waveHolder.innerHTML = waveController.allComponents();
+}
+
+
+function drawPoints() {
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+		
+	for (var i = 0; i < 10000; i ++) {
+		var p = new RandomPoint(size);
+		value = waves.value(p);
+		ctx.fillStyle = hslColorChooser(value);	
+		ctx.fillRect(p.x, p.y, 0.5, 0.5);	
+	}
+};
+
+
+$(document).ready(function() {
+	
+	var canvasDiv = document.getElementById("canvasHolder");
+	canvasDiv.innerHTML = "<canvas id='canvas' width='"+ size +"' height='"+ size +"'></canvas>";
+	
+	waveController.newWave();
+	refreshWaveHolder();
+	var timedDraw = setInterval(drawPoints, 4);
+	waveController.callback = refreshWaveHolder;
+
+});
+
+</script>
+
+<body>
+
+<nav class="navbar navbar-default" style="margin-bottom:0px">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="..">
+				<img src="imgs/github_badge1.png" style="max-width:100%;max-height:100%" >
+			</a>
+			<p class="navbar-text navbar-right">
+				<a href=".." class="navbar-link">dmackinnon1.github.io</a>
+			</p>
+		</
+		</div>
+</nav>
+
+<div class="container-fluid">
+	<div class='row'>
+		<div class='col-sm-1'></div>
+		<div class='col-sm-10'>
+			<div class="page-header">
+				<h1>Chladni Figures</h1>
+			</div> 	
+			<br>
+			<hr>
+			<div id="canvasHolder", class="canvasDiv centered"></div>
+			<hr>
+		</div>
+	<br>
+	<div class='col-sm-1'></div>
+	</div>
+	<div class='row'>
+	<div class='col-sm-3'></div>
+		<div class='col-sm-4'>
+		<div id="waveComponentHolder"></div>
+		<br>
+		<div class="btn-group btn-group-md " role="group">
+			  <button type="button" id="addWave" class="btn btn-success", onclick="addWaveButtonClicked(event)"><span class='glyphicon glyphicon-plus-sign lrg-font'></span></button>
+		</div> 
+	</div>
+	<div class='col-sm-3'></div>	
+	</div>
+</body>
+</html>

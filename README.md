@@ -1,2 +1,3 @@
 # chladni
-page and script for generating chladni figures
+Scripts and page for playing around with Chladni figures.
+
