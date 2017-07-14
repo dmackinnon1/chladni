@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" 	
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 <title>Chladni Figures</title>
 </head>
 <style>
@@ -32,12 +35,14 @@
 .lrg-font {
 	font-size:1.5em;
 }
-
+.equationBox{
+	padding: 2px;
+	font-size:1.5em;
+}
 </style> 
 </head>
 
 <script src="js/chladni.js"></script> 
-
 <script> 
 var size = 400;
 
@@ -49,6 +54,10 @@ function addWaveButtonClicked() {
 function refreshWaveHolder() {
 	var waveHolder = document.getElementById("waveComponentHolder");	
 	waveHolder.innerHTML = waveController.allComponents();
+
+	var equationHolder = document.getElementById("waveEquation");
+	equationHolder.innerHTML = waveController.equationComponent();
+	MathJax.Hub.Typeset(); //required to render dynamically generated Latex
 }
 
 
@@ -102,6 +111,10 @@ $(document).ready(function() {
 				<h1>Chladni Figures</h1>
 			</div> 	
 			<br>
+			<span class='lrg-font'>
+			Named for Ernst Chladni, these figures represent nodal patterns formed by vibrating surfaces. Traditionally, these are formed placing fine particles on a surface, like a sheet of metal that is set vibrating (a violin bow against an edge of the metal plate is one popular method). The particles settle in the areas of the surface that have the least motion - the nodes. When you achieve a resonant frequency, a characteristic pattern emerges. <br>
+			You can add and modify the vibrations added to the simulated surface below. Unlike actual physical systems, the simulation allows you to superimpose vibrations that would happen on a fixed edge surface and those that would happen on surface whose edges are allowed to freely vibrate.
+			</span> 
 			<hr>
 			<div id="canvasHolder", class="canvasDiv centered"></div>
 			<hr>
@@ -110,15 +123,25 @@ $(document).ready(function() {
 	<div class='col-sm-1'></div>
 	</div>
 	<div class='row'>
-	<div class='col-sm-3'></div>
-		<div class='col-sm-4'>
+	<div class='col-sm-2'></div>
+		<div class='col-sm-8'>
+		<span class='lrg-font'>
+		The first button will modify the frequency of the wave, the second will change it from a fixed edge surface to one that can vibrate freely.
+		</span>
+		<hr>
 		<div id="waveComponentHolder"></div>
 		<br>
 		<div class="btn-group btn-group-md " role="group">
 			  <button type="button" id="addWave" class="btn btn-success", onclick="addWaveButtonClicked(event)"><span class='glyphicon glyphicon-plus-sign lrg-font'></span></button>
-		</div> 
+		</div> <span class="lrg-font">Add Vibration</span>
+		<br>
+		<hr>
+		<span class='lrg-font'>
+		The displacement of particles on the surface is modeled by the equation below.
+		</span>
+		<span id='waveEquation'></span>
 	</div>
-	<div class='col-sm-3'></div>	
+	<div class='col-sm-2'></div>	
 	</div>
 </body>
 </html>
