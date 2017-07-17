@@ -48,7 +48,7 @@
 
 <script src="js/chladni.js"></script> 
 <script> 
-var size = 400;
+var size = 350;
 
 function addWaveButtonClicked() {
 		waveController.newWave();
@@ -134,7 +134,7 @@ $(document).ready(function() {
 	<div class='col-sm-2'></div>
 		<div class='col-sm-8'>
 		<span class='lrg-font'>
-		The first button will modify the frequency of the wave, the second will change it from a wave on a fixed edge surface to one on a surface that can vibrate freely.
+		The first button set (grey) will modify the frequency of the wave. The second button (blue) allows you to change the wave between one that form on a fixed edge surface to one that forms on a surface that can vibrate freely. The red button will remove the wave from the surface. The equation (unsimplified) of the resulting waves is shown below.
 		</span>
 		<hr>
 		<div id="waveComponentHolder"></div>
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		<br>
 		<hr>
 		<span class='lrg-font'>
-		The displacement of particles on the surface is modeled by the equation below.
+		The displacement of particles on the surface is modeled by the equation below, where x and y range from zero to 2pi.
 		</span>
 		<span id='waveEquation'></span>
 	</div>

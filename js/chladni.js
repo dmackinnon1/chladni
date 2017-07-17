@@ -191,10 +191,10 @@ class WaveController {
 
 	frequencyButtonForWave(wave) {
 		var btn = "<div class='btn-group btn-group-md' role='group'>";
-		btn +=  "<button type='button' id='fmu_"+ wave.id + "' class='btn btn-primary', onclick='increaseWaveNumerator(event)'>"; 
+		btn +=  "<button type='button' id='fmu_"+ wave.id + "' class='btn btn-secondary', onclick='increaseWaveNumerator(event)'>"; 
 		btn += "<span class='glyphicon glyphicon-chevron-up lrg-font'></span>"
 		btn += "</button>";
-		btn +=  "<button type='button' id='fmd_"+ wave.id + "' class='btn btn-primary', onclick='decreaseWaveNumerator(event)'>"; 
+		btn +=  "<button type='button' id='fmd_"+ wave.id + "' class='btn btn-secondary', onclick='decreaseWaveNumerator(event)'>"; 
 		btn += "<span class='glyphicon glyphicon-chevron-down lrg-font'></span>"
 		btn += "</button>";
 		btn += "</div>";
