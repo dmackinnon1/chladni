@@ -26,10 +26,33 @@ class RandomPoint {
 * Color utilities
 * Used to add color shading to the 'sand'.
 */
+var colourBase = 150;
+
 function hslColorChooser(level) {
 	var l = (100 - Math.floor(level * 100)) + "%";
-	return "hsl(150, 50%, " + l +")";
+	return "hsl("+ colourBase + ", 50%, " + l +")";
 };
+
+function colourForSurfaceComponent() {
+		var btn = "<span class='lrg-font'>color hue: </span><div class='btn-group btn-group-md' role='group'>";
+		btn +=  "<button type='button' id='colourChooserUp' class='btn btn-primary', onclick='increaseHue(event)'>"; 
+		btn += "<span class='glyphicon glyphicon-chevron-up lrg-font'></span>"
+		btn += "</button>";
+		btn +=  "<button type='button' id='colourChooserDown' class='btn btn-primary', onclick='decreaseHue(event)'>"; 
+		btn += "<span class='glyphicon glyphicon-chevron-down lrg-font'></span>"
+		btn += "</button>";
+		btn += "</div>";
+		return btn;
+};
+
+function increaseHue () {
+	if (colourBase < 360) colourBase ++;
+	console.log("colour hue: " + colourBase);
+}
+function decreaseHue () {
+	if (colourBase > 0) colourBase --;
+	console.log("colour hue: " + colourBase);	
+}
 
 /**
 * Wave utilities
@@ -155,21 +178,25 @@ class WaveController {
 		this.pool.add(wave);
 	}
 
-	componentForWave(wave) {
+	componentForWave(index, wave) {
 
 		var component = "<div>";
-		component = "<span class='lrg-font'> wave:</span><span> " + this.frequencyButtonForWave(wave) + "</span>";
+		component = "<span class='lrg-font waveComponent'> wave " + index +":</span><span> " + this.frequencyButtonForWave(wave) + "</span>";
 		component += "<span>" + this.formButtonForWave(wave) + "</span>";
 		component += "<span>" + this.closeButtonForWave(wave) + "</span>";
-		component += this.equationForWave(wave);
+		//component += this.equationForWave(wave);
 		component += "</div><br>";
 		return component;		
 	}
 
 	frequencyButtonForWave(wave) {
 		var btn = "<div class='btn-group btn-group-md' role='group'>";
-		btn +=  "<button type='button' id='fm_"+ wave.id + "' class='btn btn-primary', onclick='updateWaveNumerator(event)'>"; 
-		btn += "<span class='lrg-font'>" + wave.fn + "</span></button>";  		
+		btn +=  "<button type='button' id='fmu_"+ wave.id + "' class='btn btn-primary', onclick='increaseWaveNumerator(event)'>"; 
+		btn += "<span class='glyphicon glyphicon-chevron-up lrg-font'></span>"
+		btn += "</button>";
+		btn +=  "<button type='button' id='fmd_"+ wave.id + "' class='btn btn-primary', onclick='decreaseWaveNumerator(event)'>"; 
+		btn += "<span class='glyphicon glyphicon-chevron-down lrg-font'></span>"
+		btn += "</button>";
 		btn += "</div>";
 		return btn;
 	}
@@ -207,7 +234,7 @@ class WaveController {
 	allComponents() {
 		var comps = "";
 		for (var i = 0; i < this.pool.waves.length; i ++) {
-			comps += this.componentForWave(this.pool.waves[i]);
+			comps += this.componentForWave(i, this.pool.waves[i]);
 		}
 		return comps;
 	}
@@ -222,18 +249,28 @@ var waveController = new WaveController(waves);
 /**
 * Callbacks for the wave controller components.
 */
-function updateWaveNumerator(event) {
+function increaseWaveNumerator(event) {
 	var buttonId = event.target.id;
 	if (buttonId == null || buttonId.length == 0) {
 		buttonId = event.target.parentElement.id;
 	}
-	var waveId = buttonId.slice(3, buttonId.length);
+	var waveId = buttonId.slice(4, buttonId.length);
 	var wave = waveController.getWave(waveId);
 	wave.fn += 1;
 	waveController.invokeCallback();
 }
 
-
+function decreaseWaveNumerator(event) {
+	var buttonId = event.target.id;
+	if (buttonId == null || buttonId.length == 0) {
+		buttonId = event.target.parentElement.id;
+	}
+	var waveId = buttonId.slice(4, buttonId.length);
+	var wave = waveController.getWave(waveId);
+	
+	if (wave.fn >1 ) wave.fn -= 1;
+	waveController.invokeCallback();
+}
 function removeWave(event) {
 	var buttonId = event.target.id;
 	if (buttonId == null || buttonId.length == 0) {
