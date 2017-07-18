@@ -48,7 +48,7 @@
 
 <script src="js/chladni.js"></script> 
 <script> 
-var size = 350;
+var size = 400;
 
 function addWaveButtonClicked() {
 		waveController.newWave();
@@ -68,10 +68,10 @@ function resize(event) {
 	
 	var selected = $("#" + buttonId);
 	if (buttonId == "small") {
-		size = 350;
+		size = 300;
 	}
 	if (buttonId == "medium") {
-		size = 450;
+		size = 400;
 	}
 	if (buttonId == "large") {
 		size = 550;
@@ -157,8 +157,8 @@ $(document).ready(function() {
 			<br>
 			<div class="centered lrg-font">
 				<div class="btn-group btn-group-md" role="group" >
-					<button type="button" id="small" class="btn btn-primary sizeButton", onclick="resize(event)">small</button>
-					<button type="button" id="medium" class="btn btn-secndary sizeButton", onclick="resize(event)">medium</button>
+					<button type="button" id="small" class="btn btn-secondary sizeButton", onclick="resize(event)">small</button>
+					<button type="button" id="medium" class="btn btn-primary sizeButton", onclick="resize(event)">medium</button>
 					<button type="button" id="large" class="btn btn-secondary sizeButton", onclick="resize(event)">large</button>			
 				</div>
 			</div>
