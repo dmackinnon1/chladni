@@ -1,5 +1,5 @@
 # chladni
-This repo contains scripts and an html page for playing around with Chladni figures.
+This repo contains scripts and an html page for playing around with Chladni figures. The page is online [here](https://dmackinnon1.github.io/chladni/).
 
 Named for Ernst Chladni, these figures represent nodal patterns formed by vibrating surfaces. Traditionally, these are formed placing fine particles on a surface, like a sheet of metal that is set vibrating (a violin bow against an edge of the metal plate is one popular method). The particles settle in the areas of the surface that have the least motion - the nodes. At resonant frequencies, a characteristic pattern emerges.
 
