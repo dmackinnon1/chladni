@@ -29,7 +29,7 @@ class RandomPoint {
 var colourBase = 150;
 
 function hslColorChooser(level) {
-	var l = (100 - Math.floor(level * 100)) + "%";
+	var l = (Math.floor(level * 100)) + "%";
 	return "hsl("+ colourBase + ", 50%, " + l +")";
 };
 
@@ -132,12 +132,18 @@ class WavePool {
 		for (var i = 0; i < this.waves.length; i ++) {
 			value += this.waves[i].value(p);
 		}
-		return Math.abs(value);
+		value = Math.abs(value);
+		return (value / this.waves.length);
 	}
 
 	equation() {
 		if (this.waves.length == 0) return;
-		var eq = "\\begin{split} d = | &";
+		var normalizer = "";
+		if (this.waves.length >1) {
+			normalizer = "\\frac{1}{" + this.waves.length +"}";
+		}
+		var eq = "\\begin{split} d = " + normalizer;
+		eq += " | &";
 		eq += this.waves[0].equation();
 		for (var i = 1; i < this.waves.length; i ++) {
 			eq += "\\\\ &+ ";
