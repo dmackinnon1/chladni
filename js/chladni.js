@@ -46,12 +46,12 @@ function colourForSurfaceComponent() {
 };
 
 function increaseHue () {
-	if (colourBase < 360) colourBase ++;
-	console.log("colour hue: " + colourBase);
+	if (colourBase < 360) { colourBase += 2}
+	else {colourBase = 0}
 }
 function decreaseHue () {
-	if (colourBase > 0) colourBase --;
-	console.log("colour hue: " + colourBase);	
+	if (colourBase > 0) {colourBase -=2}
+	else {colourBase = 360}
 }
 
 /**

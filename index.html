@@ -55,6 +55,32 @@ function addWaveButtonClicked() {
 		refreshWaveHolder();
 };	
 
+function resize(event) {
+	var buttonId = event.target.id;
+	if (buttonId == null || buttonId.length == 0) {
+		buttonId = event.target.parentElement.id;
+	}
+	var small = $("#small");
+	var medium = $("#medium");
+	var large = $("large");
+	$(".sizeButton").removeClass("btn-primary");
+	$(".sizeButton").addClass("btn-secondary")
+	
+	var selected = $("#" + buttonId);
+	if (buttonId == "small") {
+		size = 350;
+	}
+	if (buttonId == "medium") {
+		size = 450;
+	}
+	if (buttonId == "large") {
+		size = 550;
+	}
+	selected.addClass("btn-primary");
+	selected.addClass("btn-secondary")
+	refreshCanvas();
+};
+
 function refreshWaveHolder() {
 	var waveHolder = document.getElementById("waveComponentHolder");	
 	waveHolder.innerHTML = waveController.allComponents();
@@ -77,12 +103,14 @@ function drawPoints() {
 	}
 };
 
+function refreshCanvas() {
+	var canvasDiv = document.getElementById("canvasHolder");
+	canvasDiv.innerHTML = "<canvas id='canvas' width='"+ size +"' height='"+ size +"'></canvas>";
+};
 
 $(document).ready(function() {
 	
-	var canvasDiv = document.getElementById("canvasHolder");
-	canvasDiv.innerHTML = "<canvas id='canvas' width='"+ size +"' height='"+ size +"'></canvas>";
-	
+	refreshCanvas();	
 	var colourChooser = document.getElementById("colourChooser");
 	colourChooser.innerHTML = colourForSurfaceComponent();
 
@@ -120,13 +148,23 @@ $(document).ready(function() {
 			<br>
 			<span class='lrg-font'>
 			Named for Ernst Chladni, these figures represent nodal patterns formed by vibrating surfaces. Traditionally, these are formed placing fine particles on a surface, like a sheet of metal that is set vibrating (a violin bow against an edge of the metal plate is one popular method). The particles settle in the areas of the surface that have the least motion - the nodes. At resonant frequencies, a characteristic pattern emerges. <br><br>
-			You can add and modify the vibrations added to the simulated surface below. Unlike actual physical systems, the simulation allows you to superimpose vibrations that would occur on a fixed edge surface along with those that would occur on surface whose edges are allowed to freely vibrate.
+			You can add and modify the vibrations applied to the simulated surface below. Unlike actual physical systems, the simulation allows you to superimpose vibrations that would occur on a fixed edge surface along with those that would occur on surface whose edges are allowed to freely vibrate.
 			</span> 
 			<hr>
+			
 			<div id="colourChooser" class='centered'></div> <br>
 			<div id="canvasHolder", class="canvasDiv centered"></div>
+			<br>
+			<div class="centered lrg-font">
+				<div class="btn-group btn-group-md" role="group" >
+					<button type="button" id="small" class="btn btn-primary sizeButton", onclick="resize(event)">small</button>
+					<button type="button" id="medium" class="btn btn-secndary sizeButton", onclick="resize(event)">medium</button>
+					<button type="button" id="large" class="btn btn-secondary sizeButton", onclick="resize(event)">large</button>			
+				</div>
+			</div>
 			<hr>
-		</div>
+			<div>
+			</div>
 	<br>
 	<div class='col-sm-1'></div>
 	</div>
