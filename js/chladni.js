@@ -27,10 +27,14 @@ class RandomPoint {
 * Used to add color shading to the 'sand'.
 */
 var colourBase = 150;
+var invertColour = false;
 
 function hslColorChooser(level) {
-	var l = (Math.floor(level * 100)) + "%";
-	return "hsl("+ colourBase + ", 50%, " + l +")";
+	var l = Math.floor(level * 100);
+	if (invertColour) {
+		l = Math.floor(100 - l);
+	}
+	return "hsl("+ colourBase + ", 50%, " + l +"%)";
 };
 
 function colourForSurfaceComponent() {
@@ -41,6 +45,9 @@ function colourForSurfaceComponent() {
 		btn +=  "<button type='button' id='colourChooserDown' class='btn btn-primary', onclick='decreaseHue(event)'>"; 
 		btn += "<span class='glyphicon glyphicon-chevron-down lrg-font'></span>"
 		btn += "</button>";
+		btn += "<button type='button' id='invertColour' class='btn btn-secondary', onclick='invertHue(event)'>"; 
+		btn += "<span class='lrg-font'> invert </span>"
+		btn += "</button>"
 		btn += "</div>";
 		return btn;
 };
@@ -52,6 +59,9 @@ function increaseHue () {
 function decreaseHue () {
 	if (colourBase > 0) {colourBase -=2}
 	else {colourBase = 360}
+}
+function invertHue() {
+	invertColour = !invertColour;
 }
 
 /**
@@ -95,8 +105,10 @@ class Wave {
 }
 
 class WavePool {
+
 	constructor() {
 		this.waves = [];	
+		this.normalize = true;
 	}
 
 	add(wave) {
@@ -133,13 +145,15 @@ class WavePool {
 			value += this.waves[i].value(p);
 		}
 		value = Math.abs(value);
-		return (value / this.waves.length);
+		var normalizer = 1;
+		if (this.normalize) normalizer = this.waves.length;
+		return (value / normalizer);
 	}
 
 	equation() {
 		if (this.waves.length == 0) return;
 		var normalizer = "";
-		if (this.waves.length >1) {
+		if (this.waves.length >1  && this.normalize) {
 			normalizer = "\\frac{1}{" + this.waves.length +"}";
 		}
 		var eq = "\\begin{split} d = " + normalizer;
@@ -164,12 +178,19 @@ class WaveController {
 	constructor(wavepool) {
 		this.waveCount = 0;
 		this.pool = wavepool;
-		this.callback = null;
+		this.wavesCallback = null;
+		this.normalCallback = null;
 	}
 
-	invokeCallback(){
-		if (this.callback != null) {
-			return this.callback();
+	invokeWaveCallback(){
+		if (this.wavesCallback != null) {
+			return this.wavesCallback();
+		}
+	}
+
+	invokeNormalCallback(){
+	if (this.normalCallback != null) {
+			return this.normalCallback();
 		}
 	}
 
@@ -193,6 +214,15 @@ class WaveController {
 		//component += this.equationForWave(wave);
 		component += "</div><br>";
 		return component;		
+	}
+
+	componentForNormalization() {
+		var btn = "<div class='btn-group btn-group-md' role='group'>";
+		btn +=  "<button type='button' id='normalizerBtn',' class='btn btn-secondary', onclick='toggleNormalization(event)'>"; 
+		btn += "<span>normalize:" + this.pool.normalize +" </span>"
+		btn += "</button>";
+		btn += "</div>";
+		return btn;
 	}
 
 	frequencyButtonForWave(wave) {
@@ -263,7 +293,7 @@ function increaseWaveNumerator(event) {
 	var waveId = buttonId.slice(4, buttonId.length);
 	var wave = waveController.getWave(waveId);
 	wave.fn += 1;
-	waveController.invokeCallback();
+	waveController.invokeWaveCallback();
 }
 
 function decreaseWaveNumerator(event) {
@@ -275,7 +305,7 @@ function decreaseWaveNumerator(event) {
 	var wave = waveController.getWave(waveId);
 	
 	if (wave.fn >1 ) wave.fn -= 1;
-	waveController.invokeCallback();
+	waveController.invokeWaveCallback();
 }
 function removeWave(event) {
 	var buttonId = event.target.id;
@@ -286,7 +316,12 @@ function removeWave(event) {
 	console.log("remove: " + waveId);
 	var wave = waveController.getWave(waveId);	
 	waveController.pool.remove(wave);
-	waveController.invokeCallback();
+	waveController.invokeWaveCallback();
+}
+
+function toggleNormalization() {
+	waveController.pool.normalize = ! this.waves.normalize;
+	waveController.invokeNormalCallback();
 }
 
 function formWave(event) {
@@ -297,5 +332,5 @@ function formWave(event) {
 	var waveId = buttonId.slice(2, buttonId.length);
 	var wave = waveController.getWave(waveId);
 	wave.closed = !wave.closed;
-	waveController.invokeCallback();
+	waveController.invokeWaveCallback();
 }

@@ -81,15 +81,23 @@ function resize(event) {
 	refreshCanvas();
 };
 
+
+
 function refreshWaveHolder() {
 	var waveHolder = document.getElementById("waveComponentHolder");	
 	waveHolder.innerHTML = waveController.allComponents();
-
 	var equationHolder = document.getElementById("waveEquation");
 	equationHolder.innerHTML = waveController.equationComponent();
 	MathJax.Hub.Typeset(); //required to render dynamically generated Latex
 }
 
+function refreshNormalizationHolder() {
+	var normalizer = document.getElementById("normalizationComponentHolder");
+	normalizer.innerHTML = waveController.componentForNormalization();
+	var equationHolder = document.getElementById("waveEquation");
+	equationHolder.innerHTML = waveController.equationComponent();
+	MathJax.Hub.Typeset(); //required to render dynamically generated Latex
+}
 
 function drawPoints() {
 	var canvas = document.getElementById("canvas");
@@ -113,11 +121,12 @@ $(document).ready(function() {
 	refreshCanvas();	
 	var colourChooser = document.getElementById("colourChooser");
 	colourChooser.innerHTML = colourForSurfaceComponent();
-
+	refreshNormalizationHolder();
 	waveController.newWave();
 	refreshWaveHolder();
 	var timedDraw = setInterval(drawPoints, 4);
-	waveController.callback = refreshWaveHolder;
+	waveController.wavesCallback = refreshWaveHolder;
+	waveController.normalCallback = refreshNormalizationHolder;
 
 });
 
@@ -172,18 +181,21 @@ $(document).ready(function() {
 	<div class='col-sm-2'></div>
 		<div class='col-sm-8'>
 		<span class='lrg-font'>
-		The first button set (grey) will modify the frequency of the wave. The second button (blue) allows you to change the wave between one that form on a fixed edge surface to one that forms on a surface that can vibrate freely. The red button will remove the wave from the surface. The equation (unsimplified) of the resulting waves is shown below.
+		The first button set (grey) will modify the frequency of the wave. The second button (blue) allows you to change the wave between one that form on a fixed edge surface to one that forms on a surface that can vibrate freely. The red button will remove the wave from the surface. When normalized, the overall result is kept in the range between 0 and 1.
 		</span>
 		<hr>
 		<div id="waveComponentHolder"></div>
+		<div id="normalizationComponentHolder"></div>
 		<br>
 		<div class="btn-group btn-group-md " role="group">
 			  <button type="button" id="addWave" class="btn btn-success", onclick="addWaveButtonClicked(event)"><span class='glyphicon glyphicon-plus-sign lrg-font'></span></button>
-		</div> <span class="lrg-font">Add Vibration</span>
+		</div>
+		
+		<span class="lrg-font">Add Vibration</span>
 		<br>
 		<hr>
 		<span class='lrg-font'>
-		The displacement of particles on the surface is modeled by the equation below, where x and y range from zero to 2pi.
+		The displacement of particles on the surface is modeled by the (unsipmlified) equation below, where x and y range from zero to 2pi.
 		</span>
 		<span id='waveEquation'></span>
 	</div>
